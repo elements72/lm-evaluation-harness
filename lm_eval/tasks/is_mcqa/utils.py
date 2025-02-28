@@ -33,7 +33,7 @@ def get_answers(answer):
 
 
 def process_dataset(dataset: datasets.Dataset):
-    dataset.map(get_answers)
+    dataset.map(map_to_answers)
     return dataset
 
 def process_results(doc: datasets.Dataset, results):

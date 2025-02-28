@@ -15,6 +15,9 @@ def jaccard_index(references, predictions):
         intersection = len(set(correct) & set(pred))
         union = len(set(correct) | set(pred))
         jaccard_scores.append(intersection / union)
+
+    if len(jaccard_scores) == 0:
+        return 0
     return sum(jaccard_scores) / len(jaccard_scores)
 
 

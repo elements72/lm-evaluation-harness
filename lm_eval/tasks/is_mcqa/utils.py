@@ -19,7 +19,7 @@ def jaccard_index(references, predictions):
 
 
 def map_to_answers(row):
-    return {'answers': get_answers(row['answer'])}
+    return {'answers': get_answers(row['input'])}
 
 
 def get_answers(answer):

@@ -37,6 +37,8 @@ def process_results(doc: datasets.Dataset, results):
     preds = results[0]
     references = doc["answers"]
 
+    print('preds:', preds)
+    print('references:', references)
     # Process preds
     preds = [get_answers(pred) for pred in preds]
     # Compute metrics

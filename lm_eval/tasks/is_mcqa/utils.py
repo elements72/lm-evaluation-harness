@@ -36,9 +36,10 @@ def process_dataset(dataset: datasets.Dataset):
     return dataset.map(map_to_answers)
 
 def process_results(doc: datasets.Dataset, results):
-    preds = results[0]
+    preds = results
     references = doc["answers"]
 
+    print('doc:', doc)
     print('preds:', preds)
     print('references:', references)
     # Process preds

@@ -18,15 +18,18 @@ def jaccard_index(references, predictions):
     return sum(jaccard_scores) / len(jaccard_scores)
 
 
-def get_answers(row):
+def map_to_answers(row):
+    return {'answers': get_answers(row['answer'])}
+
+
+def get_answers(answer):
     answers_list = []
-    answer = row["answers"]
     matches = re.findall(r"(?:The answer is: |The answers are: )([A-Z](?:,\s*[A-Z])*)", answer)
     if matches:
         match = matches[0]
         # Split on spaces and strip
         answers_list = [ans.strip() for ans in match.split(",")]
-    return {"answers": answers_list}
+    return answers_list
 
 
 def process_dataset(dataset: datasets.Dataset):

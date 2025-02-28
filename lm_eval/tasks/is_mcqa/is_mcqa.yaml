@@ -1,3 +1,4 @@
+task: is_mcqa
 dataset_path: 'eve-esa/eve-is-mcqa'
 test_split: 'train'
 doc_to_text: '{{instruction}}\n\n{{question}}\n\nAnswer'

@@ -20,7 +20,7 @@ def jaccard_index(references, predictions):
 
 def get_answers(row):
     answers_list = []
-    answer = row["input"]
+    answer = row["answers"]
     matches = re.findall(r"(?:The answer is: |The answers are: )([A-Z](?:,\s*[A-Z])*)", answer)
     if matches:
         match = matches[0]

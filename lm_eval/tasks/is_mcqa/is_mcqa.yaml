@@ -1,0 +1,12 @@
+dataset_path: 'eve-esa/eve-is-mcqa'
+test_split: 'train'
+doc_to_text: '{{instruction}}\n\n{{question}}\n\nAnswer'
+doc_to_label: 'output'
+process_results: !function preprocess_is_mcqa.process_results
+metric_list:
+  - metric: acc
+  - metric: IoU
+metadata:
+  version: 2.0
+dataset_kwargs:
+  trust_remote_code: true

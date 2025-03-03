@@ -211,6 +211,7 @@ class VLLM(TemplateLM):
     ) -> Union[List[int], List[List[int]]]:
         if not add_special_tokens:
             add_special_tokens = False or self.add_bos_token
+        print(string)
         encoding: Union[List[List[int]], List[int]] = self.tokenizer(
             string,
             add_special_tokens=add_special_tokens,

@@ -60,3 +60,14 @@ def load_prompt(doc):
         prompt = f.read()
 
     return prompt.format(doc['question'])
+
+
+
+def list_fewshot_samples() -> list[dict]:
+    return [
+        {"question": "What is the capital of France?", "output": "The answer is: Paris"},
+        {"question": "What is the capital of Germany?", "output": "The answer is: Berlin"},
+        {"question": "What is the capital of Italy?", "output": "The answer is: Rome"},
+        {"question": "What is the capital of Spain?", "output": "The answer is: Madrid"},
+        {"question": "What is the capital of Portugal?", "output": "The answer is: Lisbon"},
+    ]

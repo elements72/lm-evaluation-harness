@@ -211,7 +211,7 @@ class VLLM(TemplateLM):
     ) -> Union[List[int], List[List[int]]]:
         if not add_special_tokens:
             add_special_tokens = False or self.add_bos_token
-        with open('log.txt', 'w') as f:
+        with open('log.txt', 'a') as f:
             f.write(f"{string[0]}\n")
         encoding: Union[List[List[int]], List[int]] = self.tokenizer(
             string,

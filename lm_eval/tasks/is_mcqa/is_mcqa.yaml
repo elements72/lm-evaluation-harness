@@ -5,7 +5,7 @@ doc_to_text: !function utils.doc_to_text
 doc_to_target: 'output'
 process_docs: !function utils.process_dataset
 process_results: !function utils.process_results
-target_delimiter: '\nAnswer: '
+target_delimiter: 'Answer: '
 metric_list:
   - metric: "IoU"
     aggregation: mean

@@ -22,7 +22,7 @@ def jaccard_index(references, predictions):
 
 
 def map_to_answers(row):
-    return {'answers': get_answers(row['output'])}
+    return {'answers': get_answers(row['output']), 'output': ', '.join(get_answers(row['output']))}
 
 
 def doc_to_text(doc):
@@ -49,7 +49,7 @@ def process_dataset(dataset: datasets.Dataset):
 def process_results(doc: datasets.Dataset, results):
     print(results)
     preds = results[0]
-    references = doc["answers"]
+    references = doc["answers"].split(", ")
 
     print('doc:', doc)
     print('preds:', preds)

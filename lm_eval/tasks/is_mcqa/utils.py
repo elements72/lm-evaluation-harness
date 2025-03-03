@@ -28,7 +28,7 @@ def map_to_answers(row):
 def doc_to_text(doc):
     string = f'{doc["input"]}'
 
-    if 'first' in doc.keys() and doc['first']:
+    if 'first' in doc.keys():
         string = f'The following are multiple choice questions (with answers) about EO.\n' + string
 
     return string
@@ -47,6 +47,7 @@ def process_dataset(dataset: datasets.Dataset):
     return dataset.map(map_to_answers)
 
 def process_results(doc: datasets.Dataset, results):
+    print(results)
     preds = results[0]
     references = doc["answers"]
 

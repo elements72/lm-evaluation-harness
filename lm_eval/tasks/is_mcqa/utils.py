@@ -61,7 +61,7 @@ def process_results(doc: datasets.Dataset, results):
     references = doc["answers"]
 
     # Process preds
-    preds = process_answer(pred)
+    preds = process_answer(preds)
     # Compute metrics
     subset_acc = subset_accuracy(references, preds)
     jaccard = jaccard_index(references, preds)

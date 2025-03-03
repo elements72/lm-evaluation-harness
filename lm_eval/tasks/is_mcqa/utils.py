@@ -49,7 +49,7 @@ def process_dataset(dataset: datasets.Dataset):
 def process_results(doc: datasets.Dataset, results):
     print(results)
     preds = results[0]
-    references = doc["answers"].split(", ")
+    references = doc["answers"]
 
     print('doc:', doc)
     print('preds:', preds)

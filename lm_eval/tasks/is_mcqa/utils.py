@@ -28,8 +28,10 @@ def map_to_answers(row):
 def doc_to_text(doc):
     string = f'{doc["input"]}'
 
-    if 'first' in doc.keys():
+    if 'first' in doc.keys() and doc['first']:
         string = f'The following are multiple choice questions (with answers) about EO.\n' + string
+    if 'first' not in doc.keys():
+        string = string + '\nAnswer: '
 
     return string
 
@@ -79,5 +81,5 @@ A) Albedo is the measure of how much light that hits a surface is reflected with
 B) Albedo is the measure the thickness of ice or snow
 C) Albedo is the temperature of ice or snow
 D) Albedo is the ratio between frozen water and snow
-""", 'output': 'A'},
+""", 'output': 'A', 'first': False},
     ]

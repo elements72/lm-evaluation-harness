@@ -68,8 +68,8 @@ def process_results(doc: datasets.Dataset, results):
 
     print('Question:', doc['input'])
     print('Gold:', references)
-    print('Model out:', preds)
-    print('Processed out:', process_answer(preds[0]))
+    print('Model out:', results[0])
+    print('Processed out:', preds)
     print('Subset Acc:', subset_acc)
     print('Jaccard:', jaccard)
 

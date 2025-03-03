@@ -54,3 +54,9 @@ def process_results(doc: datasets.Dataset, results):
     return {"acc": subset_acc, "IoU": jaccard}
 
 
+def load_prompt(doc):
+    # Load the prompt file
+    with open(doc['prompt_path'], 'r') as f:
+        prompt = f.read()
+
+    return prompt.format(doc['question'])

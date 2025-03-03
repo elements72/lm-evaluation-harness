@@ -1,7 +1,11 @@
 task: is_mcqa
 dataset_path: 'eve-esa/eve-is-mcqa'
 test_split: 'train'
-doc_to_text: '{{instruction}}\User:\n{{input}}\n\nAssistant:'
+doc_to_text: """[INST] <<SYS>>
+You are a knowledge expert, you are tasked to answer the following multiple-choice question (there may be more than one correct option). Give your final answer in the format of 'Answer: <list of correct options>'.
+<</SYS>>
+{question}
+[/INST]"""
 doc_to_target: 'output'
 process_docs: !function utils.process_dataset
 process_results: !function utils.process_results

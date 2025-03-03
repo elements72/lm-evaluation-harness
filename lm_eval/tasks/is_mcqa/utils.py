@@ -44,6 +44,13 @@ def get_answers(answer):
         answers_list = [ans.strip() for ans in match.split(",")]
     return answers_list
 
+def process_answer(answer):
+    # Split on commas
+    answers_list = answer.split(",")
+    # Strip each answer
+    answers_list = [ans.strip() for ans in answers_list]
+    return answers_list
+
 
 def process_dataset(dataset: datasets.Dataset):
     return dataset.map(map_to_answers)
@@ -57,7 +64,7 @@ def process_results(doc: datasets.Dataset, results):
     print('preds:', preds)
     print('references:', references)
     # Process preds
-    preds = [get_answers(pred) for pred in preds]
+    preds = [process_answer(pred) for pred in preds]
     # Compute metrics
     subset_acc = subset_accuracy(references, preds)
     jaccard = jaccard_index(references, preds)

@@ -71,7 +71,7 @@ A) Global warming causes melting of ice on land such as glaciers, and ice sheets
 B) Ice and snow reflect sunlight and have a cooling effect on the climate. Without ice, darker land and ocean absorbs heat and amplifies climate change.
 C) Thawing permafrost releases significant amounts of greenhouse gases, causing further warming
 D) Human populations living off or close to the sea will be affected as well as population within mountain regions
-""", "first": True, 'output': 'The answers are: A, B, C, D'},
+""", "first": True, 'output': 'A, B, C, D'},
 
         {"input": """What is ice and snow albedo?
 
@@ -79,5 +79,5 @@ A) Albedo is the measure of how much light that hits a surface is reflected with
 B) Albedo is the measure the thickness of ice or snow
 C) Albedo is the temperature of ice or snow
 D) Albedo is the ratio between frozen water and snow
-""", 'output': 'The answer is: A'},
+""", 'output': 'A'},
     ]

@@ -74,7 +74,7 @@ def list_fewshot_samples() -> list[dict]:
         
         Answer: A, B, C, D
         
-        """, "first": True},
+        """, "first": True, 'output': 'The answers are: A, B, C, D'},
 
         {"input": """What is ice and snow albedo?
 
@@ -85,5 +85,5 @@ def list_fewshot_samples() -> list[dict]:
         
         Answer: A
         
-        """}
+        """, 'output': 'The answer is: A'},
     ]

@@ -213,7 +213,8 @@ class VLLM(TemplateLM):
             add_special_tokens = False or self.add_bos_token
         # Append the string to the log file
         with open("log.txt", "a") as f:
-            f.write(string[0] + "\n")
+            for i in range(len(string)):
+                f.write(string[i] + "\n")
 
         encoding: Union[List[List[int]], List[int]] = self.tokenizer(
             string,

@@ -60,14 +60,18 @@ def process_results(doc: datasets.Dataset, results):
     preds = results[0]
     references = doc["answers"]
 
-    print('doc:', doc)
-    print('preds:', preds)
-    print('references:', references)
     # Process preds
     preds = [process_answer(pred) for pred in preds]
     # Compute metrics
     subset_acc = subset_accuracy(references, preds)
     jaccard = jaccard_index(references, preds)
+
+    print('Question:', doc['input'])
+    print('Gold:', references)
+    print('Model out:', preds)
+    print('Processed out:', process_answer(preds[0]))
+    print('Subset Acc:', subset_acc)
+    print('Jaccard:', jaccard)
 
     return {"acc": subset_acc, "IoU": jaccard}
 
@@ -81,8 +85,7 @@ B) Ice and snow reflect sunlight and have a cooling effect on the climate. Witho
 C) Thawing permafrost releases significant amounts of greenhouse gases, causing further warming
 D) Human populations living off or close to the sea will be affected as well as population within mountain regions
 """, "first": True, 'output': 'A, B, C, D'},
-
-        {"input": """What is ice and snow albedo?
+{"input": """What is ice and snow albedo?
 
 A) Albedo is the measure of how much light that hits a surface is reflected without being absorbed
 B) Albedo is the measure the thickness of ice or snow

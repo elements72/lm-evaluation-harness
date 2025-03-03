@@ -22,13 +22,13 @@ def jaccard_index(references, predictions):
 
 
 def map_to_answers(row):
-    return {'answers': get_answers(row['output']), 'few_shot':  None}
+    return {'answers': get_answers(row['output'])}
 
 
 def doc_to_text(doc):
-    string = f'{doc["question"]}'
+    string = f'{doc["input"]}'
 
-    if doc['few_shot'] is None:
+    if 'first' in doc.keys() and doc['first']:
         string = f'The following are multiple choice questions (with answers) about EO.\n' + string
 
     return string
@@ -62,18 +62,9 @@ def process_results(doc: datasets.Dataset, results):
     return {"acc": subset_acc, "IoU": jaccard}
 
 
-def load_prompt(doc):
-    # Load the prompt file
-    with open(doc['prompt_path'], 'r') as f:
-        prompt = f.read()
-
-    return prompt.format(doc['question'])
-
-
-
 def list_fewshot_samples() -> list[dict]:
     return [
-        {"question": """
+        {"input": """
         What are the impacts of a warming climate on the cryosphere?
 
         A) Global warming causes melting of ice on land such as glaciers, and ice sheets in Antarctica and Greenland. This adds water to the ocean, and raises global sea levels
@@ -83,9 +74,9 @@ def list_fewshot_samples() -> list[dict]:
         
         Answer: A, B, C, D
         
-        """, "few_shot": "1"},
+        """, "first": True},
 
-        {"question": """What is ice and snow albedo?
+        {"input": """What is ice and snow albedo?
 
         A) Albedo is the measure of how much light that hits a surface is reflected without being absorbed
         B) Albedo is the measure the thickness of ice or snow
@@ -94,5 +85,5 @@ def list_fewshot_samples() -> list[dict]:
         
         Answer: A
         
-        """, "few_shot": "1"}
+        """}
     ]

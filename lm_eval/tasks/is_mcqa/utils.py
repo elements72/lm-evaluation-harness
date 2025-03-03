@@ -22,8 +22,16 @@ def jaccard_index(references, predictions):
 
 
 def map_to_answers(row):
-    return {'answers': get_answers(row['output'])}
+    return {'answers': get_answers(row['output']), 'few_shot':  None}
 
+
+def doc_to_text(doc):
+    string = f'{doc["question"]}'
+
+    if doc['few_shot'] is None:
+        string = f'The following are multiple choice questions (with answers) about EO.\n' + string
+
+    return string
 
 def get_answers(answer):
     answers_list = []
@@ -65,9 +73,26 @@ def load_prompt(doc):
 
 def list_fewshot_samples() -> list[dict]:
     return [
-        {"question": "What is the capital of France?", "output": "The answer is: Paris"},
-        {"question": "What is the capital of Germany?", "output": "The answer is: Berlin"},
-        {"question": "What is the capital of Italy?", "output": "The answer is: Rome"},
-        {"question": "What is the capital of Spain?", "output": "The answer is: Madrid"},
-        {"question": "What is the capital of Portugal?", "output": "The answer is: Lisbon"},
+        {"question": """
+        What are the impacts of a warming climate on the cryosphere?
+
+        A) Global warming causes melting of ice on land such as glaciers, and ice sheets in Antarctica and Greenland. This adds water to the ocean, and raises global sea levels
+        B) Ice and snow reflect sunlight and have a cooling effect on the climate. Without ice, darker land and ocean absorbs heat and amplifies climate change.
+        C) Thawing permafrost releases significant amounts of greenhouse gases, causing further warming
+        D) Human populations living off or close to the sea will be affected as well as population within mountain regions
+        
+        Answer: A, B, C, D
+        
+        """, "few_shot": "1"},
+
+        {"question": """What is ice and snow albedo?
+
+        A) Albedo is the measure of how much light that hits a surface is reflected without being absorbed
+        B) Albedo is the measure the thickness of ice or snow
+        C) Albedo is the temperature of ice or snow
+        D) Albedo is the ratio between frozen water and snow
+        
+        Answer: A
+        
+        """, "few_shot": "1"}
     ]

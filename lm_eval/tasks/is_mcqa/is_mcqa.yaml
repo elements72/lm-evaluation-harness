@@ -6,6 +6,7 @@ doc_to_target: 'output'
 process_docs: !function utils.process_dataset
 process_results: !function utils.process_results
 target_delimiter: 'Answer: '
+gen_prefix: 'Answer '
 description: 'The following are multiple choice questions (with answers) about EO.\n'
 metric_list:
   - metric: "IoU"

@@ -71,7 +71,7 @@ def process_results(doc: datasets.Dataset, results):
     subset_acc = subset_accuracy(references, preds)
     jaccard = jaccard_index(references, preds)
 
-    print('Question:', doc['input'])
+    print('Question:', doc['question'])
     print('Gold:', references)
     print('Model out:', results[0])
     print('Processed out:', preds)

@@ -2,8 +2,6 @@ import datasets
 import re
 import evaluate
 
-from scripts.model_comparator import print_results
-
 bertscore = evaluate.load("bertscore")
 
 def process_answer(answer):

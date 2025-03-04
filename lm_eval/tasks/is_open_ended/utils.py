@@ -14,7 +14,7 @@ def process_results(doc, results):
     print("doc:", doc)
     print("results:", results)
     results = results[0]
-    result = bertscore.compute(predictions=results, references=doc)
+    result = bertscore.compute(predictions=results, references=doc['answer'])
 
     return {"bertscore_f1": result['f1'][0], "bertscore_precision": result['precision'][0], "bertscore_recall": result['recall'][0]}
 

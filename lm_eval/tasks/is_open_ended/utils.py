@@ -10,8 +10,8 @@ def process_answer(answer):
     return answer
 
 
-def process_results(doc: datasets.Dataset, results):
-    result = bertscore.compute(predictions=results, references=doc['answer'])
+def process_results(doc, results):
+    result = bertscore.compute(predictions=results, references=doc)
 
     return {"bertscore_f1": result['f1'][0], "bertscore_precision": result['precision'][0], "bertscore_recall": result['recall'][0]}
 

@@ -30,8 +30,8 @@ def map_to_answers(row):
 def doc_to_text(doc):
     string = f'{doc["question"]}\n'
 
-    for label, txt in zip(doc['choices']['labels'], doc['choices']['text']):
-        string += f'{label}) {txt}'
+    for label, txt in zip(doc['choices']['label'], doc['choices']['text']):
+        string += f'{label}. {txt}\n'
 
     # if 'first' in doc.keys() and doc['first']:
     #     string = f'The following are multiple choice questions (with answers) about EO.\n' + string

@@ -2,7 +2,7 @@ import datasets
 import re
 import evaluate
 
-bertscore = evaluate.load("bertscore")
+bertscore = evaluate.load("bertscore", lang="en")
 
 def process_answer(answer):
     # Split on commas

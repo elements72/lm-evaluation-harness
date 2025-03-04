@@ -25,8 +25,6 @@ def map_to_answers(row):
     return {'output': ', '.join(row['answers'])}
 
 
-
-
 def doc_to_text(doc):
     string = f'{doc["question"]}\n'
 

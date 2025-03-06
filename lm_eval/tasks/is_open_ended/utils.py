@@ -75,7 +75,7 @@ def process_results(doc, results):
     print("doc:", doc)
     print("results:", results)
     dict_results = {}
-    bertscore_results = bertscore_metric(predictions=results, references=[doc['answer']], lang="en")
+    bertscore_results = bertscore_metric(predictions=results, references=[doc['answer']])
     dict_results.update(bertscore_results)
     llm_result = llm_as_judge(doc['question'], results[0], doc['answer'])
     dict_results.update(llm_result)

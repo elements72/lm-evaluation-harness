@@ -79,6 +79,7 @@ def process_results(doc, results):
     dict_results.update(bertscore_results)
     llm_result = llm_as_judge(doc['question'], results[0], doc['answer'])
     dict_results.update(llm_result)
+    print("dict_results:", dict_results)
     return dict_results
 
 

@@ -4,13 +4,33 @@ import evaluate
 from openai import OpenAI
 import time
 import os
+import logging
 
-bertscore = evaluate.load("bertscore", lang="en")
+bertscore = evaluate.load("bertscore", lang="en-sci")
+bleu = evaluate.load("bleu")
+bleurt = evaluate.load("bleurt", module_type="metric")
 client = OpenAI()
 
+logger = logging.getLogger(__name__)
+
+
+def create_chat_prompt_2(question: str, llm_answer: str, answer: str) -> list[dict[str, str]]:
+    """
+    Prompt from https://arxiv.org/abs/2305.12421
+    """
+    sys_msg = """Here is a question, a set of golden answers (split with /), an AI-generated answer. Can you judge whether the AI-generated answer is correct according to the question and golden answers, simply answer Yes or No"""
+    user_prompt = f"""QUESTION: {question}\n AI ANSWER: {llm_answer}\n GOLDEN ANSWER: {answer}\n"""
+
+    return [
+        {"role": "system", "content": sys_msg},
+        {"role": "user", "content": user_prompt}
+    ]
 
 
 def create_chat_prompt(question: str, llm_answer: str, answer: str) -> list[dict[str, str]]:
+    """
+    Prompt from https://arxiv.org/html/2406.07545v1
+    """
     sys_msg = """Evaluate the answer of a AI model to a question. You will be provided with the question, the AI model’s answer, and the correct answer. Your task is to evaluate the AI model’s response and determine whether it is Correct or Incorrect.
             Grade the AI model answers based ONLY on their factual accuracy. It is OK if the AI model answer contains more information than the true answer, as long as it does not contain any conflicting statements. Otherwise, it should be marked as Incorrect. Ignore differences in punctuation and phrasing between the AI model’s answer and the true answer.
             Example Format:
@@ -52,14 +72,24 @@ def get_chat_completion(prompt: list[dict[str, str]]) -> str:
 def llm_as_judge(question: str, llm_answer: str, answer: str) -> dict[str, int]:
     prompt = create_chat_prompt(question, llm_answer, answer)
     llm_judge = get_chat_completion(prompt)
-    #print(f"LM: {llm_judge}")
     # Parse Yes/No into 1, 0 for accuracy
     llm_judge = 0 if 'incorrect' in llm_judge.lower() else 1
 
-    return {"llm_judge_accuracy": llm_judge}
+    # SECOND PROMPT
+    prompt2 = create_chat_prompt_2(question, llm_answer, answer)
+    llm_judge2 = get_chat_completion(prompt2)
+    # Parse Yes/No into 1, 0 for accuracy
+    if 'yes' in llm_judge2.lower():
+        llm_judge2 = 1
+    elif 'no' in llm_judge2.lower():
+        llm_judge2 = 0
+    else:
+        print('Answer not recognized:', llm_judge2)
+
+    return {"llm_judge_accuracy": llm_judge, "llm_judge_accuracy_2": llm_judge2}
 
 
-def bertscore_metric(predictions: list[str], references: list[str], threshold=0.50) -> dict[str, float]:
+def bertscore_metric(predictions: list[str], references: list[list[str]], threshold=0.50) -> dict[str, float]:
     result = bertscore.compute(predictions=predictions, references=references, lang="en")
     f1 = result['f1'][0]
     precision = result['precision'][0]
@@ -69,17 +99,42 @@ def bertscore_metric(predictions: list[str], references: list[str], threshold=0.
     return result
 
 
+def bleu_metric(predictions: list[str], references: list[str], threshold=0.50) -> dict[str, float]:
+    result = bleu.compute(predictions=predictions, refrences=references)
+    bleu_score = result['bleu']
+    accuracy = 1 if bleu_score > threshold else 0
+    result = {'bleu_score': bleu_score, 'bleu_accuracy': accuracy}
+    return result
+
+
+def bleurt_metric(predictions: list[str], references: list[str], threshold=0.50) -> dict[str, float]:
+    result = bleurt.compute(predictions=predictions, references=references)
+    score = result['scores'][0]
+    accuracy = 1 if score > threshold else 0
+    result = {'bleurt_score': result, 'bleurt_accuracy': accuracy}
+    return result
 
 
 def process_results(doc, results):
-    print("doc:", doc)
-    print("results:", results)
     dict_results = {}
+    bleu_score = bleu_metric(predictions=results, refrences=[[doc['answer']]])
     bertscore_results = bertscore_metric(predictions=results, references=[doc['answer']])
-    dict_results.update(bertscore_results)
+    bleurt_results = bleurt_metric(predictions=results, references=[doc['answer']])
     llm_result = llm_as_judge(doc['question'], results[0], doc['answer'])
+
+    dict_results.update(bleu_score)
+    dict_results.update(bertscore_results)
     dict_results.update(llm_result)
-    print("dict_results:", dict_results)
+    dict_results.update(bleurt_results)
+
+    # Log results
+    logger.info(f"Results for {doc['question']}")
+    logger.info(f"BLEU: {bleu_score}")
+    logger.info(f"BERTScore: {bertscore_results}")
+    logger.info(f"LLM Judge: {llm_result}")
+    logger.info(f"BLEURT: {bleurt_results}")
+
+
     return dict_results
 
 

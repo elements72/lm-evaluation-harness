@@ -89,7 +89,7 @@ def llm_as_judge(question: str, llm_answer: str, answer: str) -> dict[str, int]:
     return {"llm_judge_accuracy": llm_judge, "llm_judge_accuracy_2": llm_judge2}
 
 
-def bertscore_metric(predictions: list[str], references: list[list[str]], threshold=0.50) -> dict[str, float]:
+def bertscore_metric(predictions: list[str], references: list[str], threshold=0.50) -> dict[str, float]:
     result = bertscore.compute(predictions=predictions, references=references, lang="en")
     f1 = result['f1'][0]
     precision = result['precision'][0]
@@ -99,7 +99,7 @@ def bertscore_metric(predictions: list[str], references: list[list[str]], thresh
     return result
 
 
-def bleu_metric(predictions: list[str], references: list[str], threshold=0.50) -> dict[str, float]:
+def bleu_metric(predictions: list[str], references: list[list[str]], threshold=0.50) -> dict[str, float]:
     result = bleu.compute(predictions=predictions, refrences=references)
     bleu_score = result['bleu']
     accuracy = 1 if bleu_score > threshold else 0
@@ -117,7 +117,7 @@ def bleurt_metric(predictions: list[str], references: list[str], threshold=0.50)
 
 def process_results(doc, results):
     dict_results = {}
-    bleu_score = bleu_metric(predictions=results, refrences=[[doc['answer']]])
+    bleu_score = bleu_metric(predictions=results, references=[[doc['answer']]])
     bertscore_results = bertscore_metric(predictions=results, references=[doc['answer']])
     bleurt_results = bleurt_metric(predictions=results, references=[doc['answer']])
     llm_result = llm_as_judge(doc['question'], results[0], doc['answer'])

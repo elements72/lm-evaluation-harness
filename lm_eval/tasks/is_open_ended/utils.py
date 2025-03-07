@@ -113,7 +113,7 @@ def bleurt_metric(predictions: list[str], references: list[str], threshold=0.50)
     result = bleurt.compute(predictions=predictions, references=references)
     score = result['scores'][0]
     accuracy = 1 if score > threshold else 0
-    result = {'bleurt_score': result, 'bleurt_accuracy': accuracy}
+    result = {'bleurt_score': score, 'bleurt_accuracy': accuracy}
     return result
 
 
@@ -130,11 +130,13 @@ def process_results(doc, results):
     dict_results.update(bleurt_results)
 
     # Log results
-    logger.info(f"Results for {doc['question']}")
+    print(f"Results for {doc['question']}")
+    print('Answer:', doc['answer'])
+    print('LLM Answer:', results[0])
     #logger.info(f"BLEU: {bleu_score}")
-    logger.info(f"BERTScore: {bertscore_results}")
-    logger.info(f"LLM Judge: {llm_result}")
-    logger.info(f"BLEURT: {bleurt_results}")
+    print(f"BERTScore: {bertscore_results}")
+    print(f"LLM Judge: {llm_result}")
+    print(f"BLEURT: {bleurt_results}")
 
 
     return dict_results

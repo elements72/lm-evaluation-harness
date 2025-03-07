@@ -100,6 +100,8 @@ def bertscore_metric(predictions: list[str], references: list[str], threshold=0.
 
 
 def bleu_metric(predictions: list[str], references: list[list[str]], threshold=0.50) -> dict[str, float]:
+    print(predictions)
+    print(references)
     result = bleu.compute(predictions=predictions, refrences=references)
     bleu_score = result['bleu']
     accuracy = 1 if bleu_score > threshold else 0

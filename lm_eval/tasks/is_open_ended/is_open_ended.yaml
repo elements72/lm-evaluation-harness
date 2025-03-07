@@ -17,16 +17,16 @@ metric_list:
     aggregation: mean
   - metric: 'llm_judge_accuracy'
     aggregation: mean
-  - metric: 'llm_judge_accuracy_2'
-    aggregation: mean
+#  - metric: 'llm_judge_accuracy_2'
+#    aggregation: mean
 #  - metric: 'bleu_score'
 #    aggregation: mean
-  - metric: 'bleurt_score'
-    aggregation: mean
+#  - metric: 'bleurt_score'
+#    aggregation: mean
 #  - metric: 'bleu_accuracy'
 #    aggregation: mean
-  - metric: 'bleurt_accuracy'
-    aggregation: mean
+#  - metric: 'bleurt_accuracy'
+#    aggregation: mean
 metadata:
   version: 2.0
 dataset_kwargs:

@@ -8,10 +8,13 @@ import logging
 
 bertscore = evaluate.load("bertscore", lang="en-sci")
 bleu = evaluate.load("bleu")
-bleurt = evaluate.load("bleurt", module_type="metric")
+#bleurt = evaluate.load("bleurt", module_type="metric")
 client = OpenAI()
 
 logger = logging.getLogger(__name__)
+# Set the logging level to INFO
+logger.setLevel(logging.INFO)
+
 
 
 def create_chat_prompt_2(question: str, llm_answer: str, answer: str) -> list[dict[str, str]]:
@@ -76,17 +79,17 @@ def llm_as_judge(question: str, llm_answer: str, answer: str) -> dict[str, int]:
     llm_judge = 0 if 'incorrect' in llm_judge.lower() else 1
 
     # SECOND PROMPT
-    prompt2 = create_chat_prompt_2(question, llm_answer, answer)
-    llm_judge2 = get_chat_completion(prompt2)
+    #prompt2 = create_chat_prompt_2(question, llm_answer, answer)
+    #llm_judge2 = get_chat_completion(prompt2)
     # Parse Yes/No into 1, 0 for accuracy
-    if 'yes' in llm_judge2.lower():
-        llm_judge2 = 1
-    elif 'no' in llm_judge2.lower():
-        llm_judge2 = 0
-    else:
-        print('Answer not recognized:', llm_judge2)
+    #if 'yes' in llm_judge2.lower():
+    #    llm_judge2 = 1
+    #elif 'no' in llm_judge2.lower():
+    #    llm_judge2 = 0
+    #else:
+    #    print('Answer not recognized:', llm_judge2)
 
-    return {"llm_judge_accuracy": llm_judge, "llm_judge_accuracy_2": llm_judge2}
+    return {"llm_judge_accuracy": llm_judge} #, "llm_judge_accuracy_2": llm_judge2}
 
 
 def bertscore_metric(predictions: list[str], references: list[str], threshold=0.50) -> dict[str, float]:
@@ -109,34 +112,35 @@ def bleu_metric(predictions: list[str], references: list[list[str]], threshold=0
     return result
 
 
-def bleurt_metric(predictions: list[str], references: list[str], threshold=0.50) -> dict[str, float]:
-    result = bleurt.compute(predictions=predictions, references=references)
-    score = result['scores'][0]
-    accuracy = 1 if score > threshold else 0
-    result = {'bleurt_score': score, 'bleurt_accuracy': accuracy}
-    return result
+#def bleurt_metric(predictions: list[str], references: list[str], threshold=0.50) -> dict[str, float]:
+#    result = bleurt.compute(predictions=predictions, references=references)
+#    score = result['scores'][0]
+#    accuracy = 1 if score > threshold else 0
+#    result = {'bleurt_score': score, 'bleurt_accuracy': accuracy}
+#    return result
 
 
 def process_results(doc, results):
     dict_results = {}
     #bleu_score = bleu_metric(predictions=results, references=[[doc['answer']]])
     bertscore_results = bertscore_metric(predictions=results, references=[doc['answer']])
-    bleurt_results = bleurt_metric(predictions=results, references=[doc['answer']])
+    # bleurt_results = bleurt_metric(predictions=results, references=[doc['answer']])
     llm_result = llm_as_judge(doc['question'], results[0], doc['answer'])
 
     #dict_results.update(bleu_score)
     dict_results.update(bertscore_results)
     dict_results.update(llm_result)
-    dict_results.update(bleurt_results)
+    # dict_results.update(bleurt_results)
 
     # Log results
-    print(f"Results for {doc['question']}")
-    print('Answer:', doc['answer'])
-    print('LLM Answer:', results[0])
+    logger.info(f"QUESTION: {doc['question']}")
+    logger.info('ANSWER:', doc['answer'])
+    logger.info('LLM ANSWER:', results[0])
+    logger.info('######METRICS######')
     #logger.info(f"BLEU: {bleu_score}")
-    print(f"BERTScore: {bertscore_results}")
-    print(f"LLM Judge: {llm_result}")
-    print(f"BLEURT: {bleurt_results}")
+    logger.info(f"BERTScore: {bertscore_results}")
+    logger.info(f"LLM Judge: {llm_result}")
+    #print(f"BLEURT: {bleurt_results}")
 
 
     return dict_results

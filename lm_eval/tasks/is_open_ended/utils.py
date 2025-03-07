@@ -119,19 +119,19 @@ def bleurt_metric(predictions: list[str], references: list[str], threshold=0.50)
 
 def process_results(doc, results):
     dict_results = {}
-    bleu_score = bleu_metric(predictions=results, references=[[doc['answer']]])
+    #bleu_score = bleu_metric(predictions=results, references=[[doc['answer']]])
     bertscore_results = bertscore_metric(predictions=results, references=[doc['answer']])
     bleurt_results = bleurt_metric(predictions=results, references=[doc['answer']])
     llm_result = llm_as_judge(doc['question'], results[0], doc['answer'])
 
-    dict_results.update(bleu_score)
+    #dict_results.update(bleu_score)
     dict_results.update(bertscore_results)
     dict_results.update(llm_result)
     dict_results.update(bleurt_results)
 
     # Log results
     logger.info(f"Results for {doc['question']}")
-    logger.info(f"BLEU: {bleu_score}")
+    #logger.info(f"BLEU: {bleu_score}")
     logger.info(f"BERTScore: {bertscore_results}")
     logger.info(f"LLM Judge: {llm_result}")
     logger.info(f"BLEURT: {bleurt_results}")

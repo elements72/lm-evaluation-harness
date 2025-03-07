@@ -19,12 +19,12 @@ metric_list:
     aggregation: mean
   - metric: 'llm_judge_accuracy_2'
     aggregation: mean
-  - metric: 'bleu_score'
-    aggregation: mean
+#  - metric: 'bleu_score'
+#    aggregation: mean
   - metric: 'bleurt_score'
     aggregation: mean
-  - metric: 'blue_accuracy'
-    aggregation: mean
+#  - metric: 'bleu_accuracy'
+#    aggregation: mean
   - metric: 'bleurt_accuracy'
     aggregation: mean
 metadata:

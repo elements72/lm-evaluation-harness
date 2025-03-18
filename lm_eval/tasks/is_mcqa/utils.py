@@ -59,7 +59,7 @@ def process_dataset(dataset: datasets.Dataset):
     return dataset.map(map_to_answers)
 
 def process_results(doc: datasets.Dataset, results):
-    print(results)
+    #print(results)
     preds = results[0]
     references = doc["answers"]
 
@@ -69,12 +69,12 @@ def process_results(doc: datasets.Dataset, results):
     subset_acc = subset_accuracy(references, preds)
     jaccard = jaccard_index(references, preds)
 
-    print('Question:', doc['question'])
-    print('Gold:', references)
-    print('Model out:', results[0])
-    print('Processed out:', preds)
-    print('Subset Acc:', subset_acc)
-    print('Jaccard:', jaccard)
+    # print('Question:', doc['question'])
+    # print('Gold:', references)
+    # print('Model out:', results[0])
+    # print('Processed out:', preds)
+    # print('Subset Acc:', subset_acc)
+    # print('Jaccard:', jaccard)
 
     return {"acc": subset_acc, "IoU": jaccard}
 

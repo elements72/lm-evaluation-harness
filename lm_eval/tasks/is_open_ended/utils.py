@@ -11,9 +11,11 @@ bleu = evaluate.load("bleu")
 #bleurt = evaluate.load("bleurt", module_type="metric")
 client = OpenAI()
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 # Set the logging level to INFO
-logger.setLevel(logging.INFO)
+#logger.setLevel(logging.INFO)
+# Set output file
+
 
 
 
@@ -132,15 +134,15 @@ def process_results(doc, results):
     dict_results.update(llm_result)
     # dict_results.update(bleurt_results)
 
-    # Log results
-    logger.info(f"QUESTION: {doc['question']}")
-    logger.info('ANSWER:', doc['answer'])
-    logger.info('LLM ANSWER:', results[0])
-    logger.info('######METRICS######')
-    #logger.info(f"BLEU: {bleu_score}")
-    logger.info(f"BERTScore: {bertscore_results}")
-    logger.info(f"LLM Judge: {llm_result}")
-    #print(f"BLEURT: {bleurt_results}")
+    # # Log results
+    # logger.info(f"QUESTION: {doc['question']}")
+    # logger.info('ANSWER:', doc['answer'])
+    # logger.info('LLM ANSWER:', results[0])
+    # logger.info('######METRICS######')
+    # #logger.info(f"BLEU: {bleu_score}")
+    # logger.info(f"BERTScore: {bertscore_results}")
+    # logger.info(f"LLM Judge: {llm_result}")
+    # #print(f"BLEURT: {bleurt_results}")
 
 
     return dict_results

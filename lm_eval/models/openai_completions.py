@@ -95,7 +95,8 @@ class LocalCompletionsAPI(TemplateAPI):
         for out in outputs:
             tmp = [None] * len(out["choices"])
             for choices in out["choices"]:
-                tmp[choices["index"]] = choices["text"]
+                print(out)
+                tmp[choices.get('index', 0)] = choices["text"]
             res = res + tmp
         return res
 
@@ -155,7 +156,6 @@ class LocalChatCompletion(LocalCompletionsAPI):
             "max_tokens": max_tokens,
             "temperature": temperature,
             "stop": stop[:4],
-            "seed": seed,
             **gen_kwargs,
         }
 
@@ -165,6 +165,7 @@ class LocalChatCompletion(LocalCompletionsAPI):
         if not isinstance(outputs, list):
             outputs = [outputs]
         for out in outputs:
+            print(out)
             tmp = [None] * len(out["choices"])
             for choices in out["choices"]:
                 tmp[choices["index"]] = choices["message"]["content"]
@@ -283,10 +284,8 @@ class OpenAIChatCompletion(LocalChatCompletion):
         output = {
             "messages": messages,
             "model": self.model,
-            "max_completion_tokens": max_tokens,
             "temperature": temperature,
             "stop": stop[:4],
-            "seed": seed,
             **gen_kwargs,
         }
         if "o1" in self.model or "5" in self.model:

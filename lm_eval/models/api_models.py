@@ -323,7 +323,7 @@ class TemplateAPI(TemplateLM):
             # bit of a hack. We'll load back before sending to the API
             return JsonChatStr(
                 json.dumps(
-                    [{**item, "type": "text"} for item in chat_history],
+                    [{**item} for item in chat_history],
                     ensure_ascii=False,
                 )
             )
@@ -501,6 +501,10 @@ class TemplateAPI(TemplateLM):
             return answers
         # If the retries also fail
         except BaseException as e:
+            # If outputs is not defined, define it here for logging
+            if "outputs" not in locals():
+                outputs = None
+
             eval_logger.error(f"Exception:{repr(e)}, {outputs}, retrying.")
             raise e
         finally:

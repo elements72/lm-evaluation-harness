@@ -96,7 +96,7 @@ class LocalCompletionsAPI(TemplateAPI):
             tmp = [None] * len(out["choices"])
             for choices in out["choices"]:
                 print(out)
-                tmp[choices.get('index', 0)] = choices["text"]
+                tmp[choices["index"]] = choices["text"]
             res = res + tmp
         return res
 
